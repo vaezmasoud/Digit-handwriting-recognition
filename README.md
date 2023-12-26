@@ -2,7 +2,7 @@ In this problem, we want to build a model that can recognize a handwritten Engli
 
 To carry out this project, MNIST the dataset related to Tensorflow and Keras library in python has been used.
 
-##image normalization and convert labels to one-hot encoding
+(image normalization and convert labels to one-hot encoding)
 In this step, the images from the MNIST dataset, whose pixel values are from 0 to 255, are divided by 255 for normalization. This action converts pixel values from 0 to 255 to 0 to 1.
 
 The to_categorical function from the Keras library in TensorFlow is used to convert labels to One-Hot Encoding format.
