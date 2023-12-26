@@ -1,0 +1,98 @@
+#Import Library and load dataset
+!pip install tensorflow
+from tensorflow.keras.datasets import mnist
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+print(x_train.shape, y_train.shape)
+print(x_test.shape, y_test.shape)
+import matplotlib.pyplot as plt
+plt.imshow(x_train[0], cmap = 'gray')
+plt.title(f"Lablel :{y_train[0]}")
+plt.show()
+#image normalization and convert labels to one-hot encoding
+x_train = x_train / 255.0
+x_test = x_test / 255.0
+from tensorflow.keras.utils import to_categorical
+y_train = to_categorical(y_train, 10)
+y_test = to_categorical(y_test, 10)
+
+#create model
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Flatten, Dense
+
+model = Sequential()
+model.add(Flatten(input_shape=(28,28)))
+model.add(Dense(128, activation = 'relu'))
+model.add(Dense(10, activation='softmax'))
+
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+#train model
+model.fit(x_train, y_train, epochs=10, batch_size=32, validation_split=0.2)
+
+#evaluation model
+predictions = model.predict(x_test)
+
+#show predication model
+import numpy as np
+import matplotlib.pyplot as plt
+
+# select a sample from test datas
+index = 0
+input_image = x_test[index].reshape(1, 28, 28)  #dimentional change
+true_label = np.argmax(y_test[index])  # real label
+
+# label prediction
+predictions = model.predict(input_image)
+predicted_label = np.argmax(predictions)
+
+# show image
+plt.imshow(input_image.reshape(28, 28), cmap='gray')
+plt.title(f'True Label: {true_label}, Predicted Label: {predicted_label}')
+plt.show()
+
+#Improve Model
+from tensorflow.keras.layers import Dropout, BatchNormalization
+
+# Create Improved Model
+improved_model = Sequential()
+improved_model.add(Flatten(input_shape=(28, 28)))
+
+# Add Dense layer with Batch Normalization and Dropout with 256 neurons
+improved_model.add(Dense(256, activation='relu'))
+improved_model.add(BatchNormalization())
+improved_model.add(Dropout(0.5))
+
+# Add Dense layer with Batch Normalization and Dropout with 128 neurons
+improved_model.add(Dense(128, activation='relu'))
+improved_model.add(BatchNormalization())
+improved_model.add(Dropout(0.5))
+
+# Output layer
+improved_model.add(Dense(10, activation='softmax'))
+
+# Model Compile
+improved_model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+# train model
+improved_model.fit(x_train, y_train, epochs=15, batch_size=32, validation_split=0.2)
+
+# evaluate model
+improved_loss, improved_accuracy = improved_model.evaluate(x_test, y_test)
+print(f"Test improved Loss: {improved_loss}, Test improved Accuracy: {improved_accuracy}")
+
+#prediction model
+predictions = improved_model.predict(x_test)
+
+# select a sample from test datas
+index = 0
+input_image = x_test[index].reshape(1, 28, 28)  #dimentional change
+true_label = np.argmax(y_test[index])  # real label
+
+# label prediction
+predictions = improved_model.predict(input_image)
+predicted_label = np.argmax(predictions)
+
+# show image
+plt.imshow(input_image.reshape(28, 28), cmap='gray')
+plt.title(f'True Label: {true_label}, Predicted Label: {predicted_label}')
+plt.show()
