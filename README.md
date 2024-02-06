@@ -1,3 +1,5 @@
+# Digit handwriting recognition
+
 In this problem, we want to build a model that can recognize a handwritten English number.
 
 To carry out this project, MNIST the dataset related to Tensorflow and Keras library in python has been used.
